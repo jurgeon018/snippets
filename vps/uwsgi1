@@ -1,0 +1,165 @@
+https://www.digitalocean.com/community/tutorials/how-to-serve-django-applications-with-uwsgi-and-nginx-on-ubuntu-16-04#troubleshooting-nginx-and-uwsgi
+
+
+            INSTALL AND CONFIGURE VIRTUALENV AND VIRTUALENVWRAPPER
+sudo apt-get update
+sudo apt-get install python3-pip python3-dev python3-setuptools 
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv virtualenvwrapper uwsgi 
+
+echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
+echo "export WORKON_HOME=~/Env" >> ~/.bashrc
+echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+source ~/.bashrc
+workon firstsite 
+
+
+            CREATE DJANGO PROJECT
+cd
+mkvirtualenv firstsite
+pip install django
+cd ~
+django-admin.py startproject firstsite
+cd ~/firstsite
+~/firstsite/manage.py migrate
+~/firstsite/manage.py createsuperuser
+nano ~/firstsite/firstsite/settings.py
+:
+ALLOWED_HOSTS = ['your_server_domain_or_IP', 'second_domain_or_IP', . . .]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+:
+~/firstsite/manage.py collectstatic
+sudo ufw allow 8000
+~/firstsite/manage.py runserver 0.0.0.0:8000
+172.105.92.88:8000
+
+
+
+cd ~
+mkvirtualenv secondsite
+pip install django
+cd ~
+django-admin.py startproject secondsite
+cd ~/secondsite
+~/secondsite/manage.py migrate
+~/secondsite/manage.py createsuperuser
+nano ~/secondsite/secondsite/settings.py
+:
+ALLOWED_HOSTS = ['second_project_domain_or_IP', 'another_domain_or_IP', . . .]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+:
+~/secondsite/manage.py collectstatic
+sudo ufw allow 8000
+~/secondsite/manage.py runserver 0.0.0.0:8000
+172.105.92.88:8000
+
+
+deactivate
+workon firstsite
+deactivate
+workon secondsite
+deactivate
+
+
+            SETTING UP THE UWSGI APPLICATION SERVER 
+sudo apt-get install python3-dev
+sudo -H pip3 install uwsgi
+uwsgi --http :8000 --home /home/jurgeon/Env/firstsite --chdir /home/jurgeon/firstsite -w firstsite.wsgi
+sudo mkdir -p /etc/uwsgi/sites
+# sudo mkdir -p /home/jurgeon/uwsgi/sites # ???
+sudo nano /etc/uwsgi/sites/firstsite.ini
+:
+[uwsgi]
+project = firstsite
+uid = jurgeon
+base = /home/%(uid)
+chdir = %(base)/%(project)
+home = %(base)/Env/%(project)
+module = %(project).wsgi:application
+master = true
+processes = 5
+socket = /run/uwsgi/%(project).sock
+chown-socket = %(uid):www-data
+chmod-socket = 660
+vacuum = true
+:
+sudo cp /etc/uwsgi/sites/firstsite.ini /etc/uwsgi/sites/secondsite.ini
+sudo nano /etc/uwsgi/sites/secondsite.ini
+...
+project = secondsite
+...
+sudo nano /etc/systemd/system/uwsgi.service
+:
+[Unit]
+Description=uWSGI Emperor service
+[Service]
+ExecStartPre=/bin/bash -c 'mkdir -p /run/uwsgi; chown jurgeon:www-data /run/uwsgi'
+ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/sites
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+[Install]
+WantedBy=multi-user.target
+:
+
+
+            INSTALL AND CONFIGURE NGINX AS A REVERSE PROXY 
+sudo apt-get install nginx
+sudo nano /etc/nginx/sites-available/firstsite
+:
+server {
+    listen 80;
+    #server_name firstsite.com www.firstsite.com;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/jurgeon/firstsite;
+    }
+
+    location / {
+        include         uwsgi_params;
+        uwsgi_pass      unix:/run/uwsgi/firstsite.sock;
+    }
+}
+:
+sudo cp /etc/nginx/sites-available/firstsite /etc/nginx/sites-available/secondsite
+sudo nano /etc/nginx/sites-available/secondsite
+    server {
+        ...
+        #server_name secondsite.com www.secondsite.com;
+        ...
+        ...
+            root /home/jurgeon/secondsite;
+        ...
+        ...
+            uwsgi_pass      unix:/run/uwsgi/secondsite.sock;
+        ...
+    }
+sudo ln -s /etc/nginx/sites-available/firstsite /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/secondsite /etc/nginx/sites-enabled
+sudo nginx -t
+sudo systemctl restart nginx
+sudo systemctl start uwsgi
+sudo ufw allow 'Nginx Full'
+sudo systemctl enable nginx
+sudo systemctl enable uwsgi
+sudo ufw allow 8000
+#sudo ufw delete allow 8000
+
+
+            TROUBLESHOOTING NGINX AND UWSGI 
+sudo tail -F /var/log/nginx/error.log
+sudo ls /run/uwsgi
+sudo systemctl status uwsgi
+sudo journalctl -u uwsgi
+sudo systemctl daemon-reload
+sudo systemctl restart uwsgi
+sudo nginx -t && sudo systemctl restart nginx
+
+
+
+
+

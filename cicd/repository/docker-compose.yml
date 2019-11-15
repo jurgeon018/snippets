@@ -1,0 +1,43 @@
+services:
+    web:
+        image: registry.gitlab.com/jurgeon/test_cicd:${CI_BUILD_REF_NAME}
+        build: ./web
+        # build: . # попробовать так, но надо передвинуть docker-compose.yml в папку web
+        environment:
+            # переменные окружения, значения которых пробрасываются
+            #  в контейнер из сервера
+            - SECRET_KEY
+        command: uwsgi /usr/src/app/uwsgi.ini
+        volumes:
+            - static:/srv/static
+        restart: unless-stopped
+
+    test:
+        image: registry.gitlab.com/jurgeon/test_cicd:${CI_BUILD_REF_NAME}
+        command: python manage.py test
+        restart: "no"
+
+    postgres:
+        image: postgres:9.6
+        environment:
+            # переменные окружения: пользователь и база данных
+            - POSTGRES_USER=root
+            - POSTGRES_DB=database
+        volumes:
+            # хранилище данных
+            - data:/var/lib/postgresql/data
+        restart: unless-stopped
+
+    nginx:
+        image: nginx:mainline
+        ports:
+            # открытые наружу порты
+            - "80:80"
+            - "443:443"
+        volumes:
+            # хранилища конфигов и статических файлов
+            - ./nginx:/etc/nginx:ro
+            - static:/srv/static:ro
+        depends_on:
+            - web
+        restart: unless-stopped

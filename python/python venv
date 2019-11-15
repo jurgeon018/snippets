@@ -1,0 +1,10 @@
+virtualenv venv --python=python3.7
+
+sudo apt-get install python3-venv
+python3 -m venv django_project/venv
+python3 -m venv venv
+virtualenv -p python3 venv
+
+pip3 install pipenv
+pipenv install --three Django
+pipenv shell

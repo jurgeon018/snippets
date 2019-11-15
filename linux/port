@@ -1,0 +1,4 @@
+sudo fuser 8080/tcp
+sudo fuser 8000/tcp
+
+
