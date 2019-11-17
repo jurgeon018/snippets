@@ -1,0 +1,5 @@
+sudo ln -s /home/jurgeon/django_projects/sites/project       /etc/nginx/sites-enabled/
+sudo ln -s /home/jurgeon/django_projects/sites/project1      /etc/nginx/sites-enabled/
+sudo ln -s /home/jurgeon/django_projects/sites/uwsgi.service /etc/systemd/system/
+
+

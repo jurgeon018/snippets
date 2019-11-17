@@ -1,0 +1,5 @@
+
+sudo add-apt-repository ppa:certbot/certbotsudo apt update
+sudo apt-get install python-certbot-nginx
+sudo certbot --nginx -d margo.mendela.xyz -d delfibus.mendela.xyz
+sudo certbot renew --dry-run

@@ -1,67 +1,29 @@
-172.105.92.88
-
-    
-    local
 ssh root@172.105.92.88
-
-    remote
-apt-get update && apt-get upgrade
+sudo apt-get update && apt-get upgrade
 hostnamectl set-hostname mendela-server
 nano /etc/hosts
+    `
 127.0.0.1 localhost
 172.105.92.88 mendela-server
-adduser jurgeon
-# usermod -aG sudo jurgeon
+    `
+adduser jurgeon # or usermod -aG sudo jurgeon
 adduser jurgeon sudo
-exit
-
-    local
-ssh jurgeon@172.105.92.88 
-
-    remote
-mkdir -p ~/.ssh  
-exit
-
-    local
-ssh-keygen -b 4096  (1 раз)
-scp ~/.ssh/id_rsa.pub jurgeon@172.105.92.88:~/.ssh/authorized_keys
-# rsync --archive --chown=jurgeon:jurgeon ~/.ssh /home/jurgeon
-ssh jurgeon@172.105.92.88 
-
-    remote
-sudo chmod 700 ~/.ssh/
-sudo chmod 600 ~/.ssh/*
-exit
-
-    local
-ssh jurgeon@172.105.92.88
-
-    remote
-sudo nano /etc/ssh/sshd_config
-    PermitRootLogin no
-    PasswordAuthentication no
-sudo systemctl restart sshd
-sudo apt-get install ufw
+sudo apt-get install uwsgi apache nginx gunicorn \
+                    postgresql-11 ufw python3-dev python3-pip \
+                    python3-venv python3-setuptools apache2 \
+                    libapache2-mod-wsgi-py3  virtualenv \ 
+                    virtualenvwrapper
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv virtualenvwrapper uwsgi 
 ufw app list
 sudo ufw default allow outgoing
 sudo ufw default deny incoming
-ufw allow OpenSSH
+sudo ufw status 
+#sudo ufw disable 
+sudo ufw allow OpenSSH
 sudo ufw allow ssh
 sudo ufw allow 8000
 sudo ufw allow http
 sudo ufw allow https
 sudo ufw enable
 sudo ufw status
-sudo apt-get install python3-pip python3-venv python3-setuptools apache2 libapache2-mod-wsgi-py3
-ssh-keygen -t rsa -b 4096 -C "jurgeon018@gmail.com"
-
-https://help.github.com/en/enterprise/2.16/user/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-/home/jurgeon/.ssh/id_rsa.pub cp to  https://github.com/settings/keys
-mkdir margo 
-cd margo 
-python -m venv venv 
-source venv/bin/activate
-git clone git@github.com:jurgeon018/margo.git
-mv margo src
-cd src
-pip install -r requirements.txt

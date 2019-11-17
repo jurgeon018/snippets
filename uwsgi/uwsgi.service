@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI Emperor service
+[Service]
+ExecStartPre=/bin/bash -c 'mkdir -p /home/jurgeon/django_projects/sites; chown jurgeon:www-data /home/jurgeon/django_projects/sites'
+ExecStart=/usr/local/bin/uwsgi --emperor /home/jurgeon/django_projects/sites 
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+[Install]
+WantedBy=multi-user.target 
+
+
