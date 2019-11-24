@@ -7,7 +7,20 @@ ssh jurgeon@172.105.83.107
 sudo chmod 700 ~/.ssh/
 sudo chmod 600 ~/.ssh/*
 exit
+<<<<<<< HEAD
 ssh jurgeon@172.105.83.107
+sudo nano /etc/ssh/sshd_config
+    PermitRootLogin no
+    PasswordAuthentication no
+sudo systemctl restart sshd
+=======
+ssh jurgeon@172.105.92.88
+>>>>>>> bdf02787c7c6b6949a08bbf6d9b465c7f6569a5a
+
+
+
+
+
 sudo nano /etc/ssh/sshd_config
     PermitRootLogin no
     PasswordAuthentication no
@@ -15,10 +28,3 @@ sudo systemctl restart sshd
 
 
 
-
-
-ssh-keygen -t rsa -b 4096 -C "jurgeon018@gmail.com"
-/home/jurgeon/.ssh/id_rsa.pub cp to  https://github.com/settings/keys
-
-
-https://help.github.com/en/enterprise/2.16/user/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
