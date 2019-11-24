@@ -50,6 +50,10 @@ sudo systemctl start uwsgi
 sudo systemctl restart uwsgi
 sudo systemctl daemon-reload
 
+
+
+
+
 sudo reboot
 # https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands
 # sudo service uwsgi start

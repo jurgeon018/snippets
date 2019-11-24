@@ -1,18 +1,17 @@
-ssh root@172.105.92.88
+ssh root@172.105.72.234
 sudo apt-get update && apt-get upgrade
-hostnamectl set-hostname mendela-server
+hostnamectl set-hostname margo-server
 nano /etc/hosts
     `
 127.0.0.1 localhost
-172.105.92.88 mendela-server
+172.105.72.234 margo-server
     `
 adduser jurgeon # or usermod -aG sudo jurgeon
 adduser jurgeon sudo
-sudo apt-get install uwsgi apache nginx gunicorn \
+sudo apt-get install uwsgi nginx gunicorn \
                     postgresql-11 ufw python3-dev python3-pip \
-                    python3-venv python3-setuptools apache2 \
-                    libapache2-mod-wsgi-py3  virtualenv \ 
-                    virtualenvwrapper
+                    python3-venv python3-setuptools 
+
 sudo -H pip3 install --upgrade pip
 sudo -H pip3 install virtualenv virtualenvwrapper uwsgi 
 ufw app list

@@ -3,3 +3,4 @@ sudo ln -s /home/jurgeon/django_projects/sites/project1      /etc/nginx/sites-en
 sudo ln -s /home/jurgeon/django_projects/sites/uwsgi.service /etc/systemd/system/
 
 
+sudo ln -s /home/jurgeon/django_projects/sites/delfibus       /etc/nginx/sites-enabled/
