@@ -1,0 +1,107 @@
+
+
+nano ~/test.py 
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type','text/html')])
+    return [b"Hello World"] # python3
+    #return ["Hello World"] # python2
+uwsgi 
+    --http :8000 
+    --wsgi-file test.py
+uwsgi 
+    --http :8000 
+    --module mysite.wsgi
+uwsgi 
+    --http :8000
+    --home VENV_DIR 
+    --chdir BASE_DIR 
+    -w project.wsgi  # or 
+   #-- wsgi-file BASE_DIR/project_root/wsgi.py
+uwsgi 
+    --socket :8001 
+    --wsgi-file test.py
+uwsgi 
+    --socket project.sock 
+    --wsgi-file test.py
+uwsgi 
+    --socket project.sock 
+    --module project.wsgi 
+    --chmod-socket=664
+uwsgi 
+    --ini project_uwsgi.ini
+sudo mkdir /etc/uwsgi/vassals
+sudo ln -s /path/to/your/mysite/project_uwsgi.ini /etc/uwsgi/vassals/
+sudo uwsgi 
+    --emperor /etc/uwsgi/vassals 
+    --uid www-data 
+    --gid www-data
+
+
+sudo usermod -a -G jurgeon www-data
+
+sudo ufw allow 'Nginx Full'
+sudo nginx -t
+
+sudo systemctl enable nginx
+sudo systemctl enable uwsgi
+sudo systemctl start nginx
+sudo systemctl restart nginx
+sudo systemctl start uwsgi
+sudo systemctl restart uwsgi
+sudo systemctl daemon-reload
+
+
+
+
+
+sudo reboot
+# https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands
+# sudo service uwsgi start
+# sudo service nginx configtest && sudo service nginx restart
+# sudo /etc/init.d/nginx start 
+# sudo /etc/init.d/nginx restart
+
+sudo reboot
+
+
+            TROUBLESHOOTING NGINX AND UWSGI 
+sudo tail -F /var/log/nginx/error.log
+sudo ls UWSGI_SOCKETS_DIR
+sudo systemctl status uwsgi
+sudo journalctl -u uwsgi
+sudo systemctl daemon-reload
+sudo systemctl restart uwsgi
+sudo nginx -t && sudo systemctl restart nginx
+
+
+
+
+sudo apt-get install supervisor
+sudo service supervisor start
+sudo nano production.conf 
+    `
+[program:<project_name>_uwsgi]
+environment=PATH="/home/<username>/<venv_path>/bin"
+numprocs=1
+directory=/home/<username>/<project_name>
+command=/home/<username>/<venv_path>/bin/uwsgi uwsgi/production.ini
+user=<username>
+autostart=true
+autorestart=true
+redirect_stderr=true
+stopwaitsecs=60
+stopsignal=INT
+stderr_logfile=/home/<username>/logs/%(program_name)s_err.log
+stdout_logfile=/home/<username>/logs/%(program_name)s_out.log
+stdout_logfile_maxbytes=100MB
+stdout_logfile_backups=30
+stdout_capture_maxbytes=1MB
+    `
+mkdir -p /home/<username>/logs
+sudo ln -s /home/<username>/<project_name>/supervisor/production.conf /etc/supervisor/conf.d/<project_name>.conf
+sudo supervisorctl update
+sudo supervisorctl status
+ 
+
+
+

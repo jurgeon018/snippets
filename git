@@ -1,7 +1,0 @@
-
-
-ssh-keygen -t rsa -b 4096 -C "jurgeon018@gmail.com"
-/home/jurgeon/.ssh/id_rsa.pub cp to  https://github.com/settings/keys
-
-
-https://help.github.com/en/enterprise/2.16/user/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
