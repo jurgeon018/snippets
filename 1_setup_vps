@@ -1,12 +1,12 @@
-ssh root@172.105.95.108
+ssh root@172.105.77.114
 
 
 sudo apt-get update && apt-get upgrade
-hostnamectl set-hostname gao-server
+hostnamectl set-hostname agrologystics-server
 nano /etc/hosts
     `
 127.0.0.1 localhost
-172.105.95.108 gao-server
+172.105.77.114 agrologystics-server
     `
 adduser jurgeon # or usermod -aG sudo jurgeon
 adduser jurgeon sudo
@@ -28,3 +28,6 @@ sudo ufw allow http
 sudo ufw allow https
 sudo ufw enable
 sudo ufw status
+
+
+

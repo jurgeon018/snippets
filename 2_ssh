@@ -1,14 +1,16 @@
-ssh jurgeon@172.105.83.107 
+
+172.105.77.114
+
+
+ssh jurgeon@172.105.77.114 
 mkdir -p ~/.ssh  
 exit
 ssh-keygen -b 4096  #(1 раз)
-scp ~/.ssh/id_rsa.pub jurgeon@172.105.83.107:~/.ssh/authorized_keys # rsync --archive --chown=jurgeon:jurgeon ~/.ssh /home/jurgeon
-ssh jurgeon@172.105.83.107 
+scp ~/.ssh/id_rsa.pub jurgeon@172.105.77.114:~/.ssh/authorized_keys # rsync --archive --chown=jurgeon:jurgeon ~/.ssh /home/jurgeon
+exit
+ssh jurgeon@172.105.77.114 
 sudo chmod 700 ~/.ssh/
 sudo chmod 600 ~/.ssh/*
-exit
-ssh jurgeon@172.105.83.107
-
 #sudo nano /etc/ssh/sshd_config
 #    PermitRootLogin no
 #    PasswordAuthentication no
