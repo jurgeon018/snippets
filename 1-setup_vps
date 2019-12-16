@@ -1,0 +1,76 @@
+sudo apt-get update && apt-get upgrade
+hostnamectl set-hostname moto-server
+nano /etc/hosts
+    `
+127.0.0.1 localhost
+172.105.84.43 moto-server
+    `
+adduser jurgeon # or usermod -aG sudo jurgeon
+adduser jurgeon sudo
+
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt update
+sudo apt-get install uwsgi               \
+                     nginx               \
+                     gunicorn            \
+                     postgresql-11       \
+                     ufw                 \
+                     python3-dev         \
+                     python3-pip         \
+                     python3-venv        \
+                     python3-setuptools  \
+                     python3-wheel       \
+                     python3-cffi        \
+                     redis               \
+                     redis-server        \
+                     rabbitmq-server     \
+                     build-essential     \
+                     libcairo2           \
+                     libpango-1.0-0      \
+                     libpangocairo-1.0-0 \
+                     libgdk-pixbuf2.0-0  \
+                     libffi-dev          \
+                     shared-mime-info    \
+                     supervisor          \
+                     python-certbot-nginx\
+
+
+
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv virtualenvwrapper uwsgi redis celery django 
+sudo ufw app list
+sudo ufw status 
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw allow 'Nginx Full'
+sudo ufw allow OpenSSH
+sudo ufw allow ssh
+sudo ufw allow 8000
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw enable
+#sudo ufw disable 
+
+
+# 2
+
+mkdir -p ~/.ssh  
+exit
+ssh-keygen -b 4096  #(1 раз)
+scp ~/.ssh/id_rsa.pub jurgeon@172.105.77.59:~/.ssh/authorized_keys # rsync --archive --chown=jurgeon:jurgeon ~/.ssh /home/jurgeon
+ssh jurgeon@172.105.77.59 
+sudo chmod 700 ~/.ssh/
+sudo chmod 600 ~/.ssh/*
+#sudo nano /etc/ssh/sshd_config
+#    PermitRootLogin no
+#    PasswordAuthentication no
+sudo systemctl restart sshd
+
+
+
+# 3 
+# https://help.github.com/en/enterprise/2.16/user/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+ssh-keygen -t rsa -b 4096 -C "jurgeon018@gmail.com"
+/home/jurgeon/.ssh/id_rsa.pub cp to  https://github.com/settings/keys
+
+

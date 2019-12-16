@@ -1,8 +1,0 @@
-
-sudo add-apt-repository ppa:certbot/certbot
-sudo apt update
-sudo apt-get install python-certbot-nginx
-sudo certbot --nginx -d www.margoltd.com
-sudo certbot renew --dry-run
-
-
