@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Login</h1>
+<form method="POST" action='{% url "login_view" %}'>
+    {% csrf_token %}
+    {{login_message}}
+    {{login_form.as_p}}
+    <!-- <label for="">username</label>
+    <input type="text" name="username" value=""><br>
+    <label for="">first_name</label>
+    <input type="text" name="first_name" value=""><br>
+    <label for="">password</label>
+    <input type="password" name="password" value=""><br>
+    -->
+    <input type="submit" value="Submit"> 
+</form>
+
+
+<h1>Register</h1>
+<form method="POST" action='{% url "register_view" %}'>
+    {% csrf_token %}
+    {{register_message}}
+    {{register_form.as_p}}
+    <!-- <label for="">username</label>
+    <input type="text" name="username" value=""><br>
+    <label for="">first_name</label>
+    <input type="text" name="first_name" value=""><br>
+    <label for="">password</label>
+    <input type="password" name="password" value=""><br>
+    -->
+    <input type="submit" value="Submit"> 
+</form>
+
+{% load socialaccount %}
+
+<h1>Django Allauth Tutorial</h1>
+{% if user.is_authenticated %}
+<p>Welcome {{ user.username }} !!!</p>
+{% else %}
+<a href="{% provider_login_url 'github' %}">Sign Up</a>
+{% endif %}
+
+{% endblock %}

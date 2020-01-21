@@ -1,0 +1,31 @@
+{% extends 'blog/main.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container">
+    <div class="row">
+    <form action="." method='POST'>
+        {% csrf_token %}
+        {{form|crispy}}
+        <p>
+            <button type="submit" class="btn btn-primary">
+                Register
+            </button>
+        </p>
+        <p>
+            <a href="">
+                <button class="btn btn-primary">
+                    Forgot your password?  
+                </button>
+            </a>
+        </p>
+        <p>
+            <a href="{% url 'login' %}">
+                <button class="btn btn-primary">
+                    Already have an account?
+                </button>
+            </a>
+        </p>
+        <hr>
+    </form></div></div>
+{% endblock content %}
+

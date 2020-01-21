@@ -4,7 +4,7 @@ python manage.py makemessages -l ru
 python manage.py makemessages -l en
 python manage.py makemessages -l uk
 Исключение ненужных папок
-python manage.py makemessages [-l en] [-i env] [-i services]
+python manage.py makemessages [-l en] [-i env] [-i services] [-i _accounts] [-i custom_auth]
 Обновление существующих переводов
 python manage.py makemessages [-a] [-i venv] [-i] [services]
 python manage.py makemessages [-a] [-d djangojs]

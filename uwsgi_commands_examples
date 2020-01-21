@@ -10,12 +10,17 @@ uwsgi
 uwsgi 
     --http :8000 
     --module mysite.wsgi
+
+*
 uwsgi 
     --http :8000
     --home VENV_DIR 
     --chdir BASE_DIR 
-    -w project.wsgi  # or 
-   #-- wsgi-file BASE_DIR/project_root/wsgi.py
+    -- wsgi-file BASE_DIR/project_root/wsgi.py # or
+    #-w project.wsgi  
+**
+
+
 uwsgi 
     --socket :8001 
     --wsgi-file test.py

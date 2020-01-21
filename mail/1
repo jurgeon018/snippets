@@ -1,0 +1,147 @@
+sudo nano /etc/hosts
+12.34.56.78    mail.mendela.xyz    mail
+
+sudo apt install mysql-server mysql-client postfix postfix-mysql \
+    dovecot-core dovecot-imapd dovecot-lmtpd dovecot-mysql
+
+При установке Postfix на вопрос «General type of mail configuration» говорим «Internet Site». 
+На вопрос о доменном имени отвечаем «mail.mendela.xyz».
+
+mysql --user root --password
+CREATE DATABASE mail;
+CREATE USER 'mail'@'localhost' IDENTIFIED BY 'pa55w0rd';
+GRANT ALL ON mail.* TO 'mail'@'localhost';
+exit
+
+mysql mail --user mail --password
+
+
+CREATE TABLE `virtual_domains` (
+`id`  INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(50) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `virtual_users` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`domain_id` INT NOT NULL,
+`password` VARCHAR(106) NOT NULL,
+`email` VARCHAR(120) NOT NULL,
+PRIMARY KEY (`id`),
+UNIQUE KEY `email` (`email`),
+FOREIGN KEY (domain_id) REFERENCES virtual_domains(id)
+  ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `virtual_aliases` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`domain_id` INT NOT NULL,
+`source` VARCHAR(100) NOT NULL,
+`destination` VARCHAR(100) NOT NULL,
+PRIMARY KEY (`id`),
+FOREIGN KEY (domain_id) REFERENCES virtual_domains(id)
+  ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+INSERT INTO virtual_domains (`id`, `name`) VALUES (1, 'mendela.xyz');
+
+INSERT INTO virtual_users (`id`, `domain_id`, `email`, `password`)
+  VALUES (1, 1, 'mail@mendela.xyz',
+    ENCRYPT('s3cr3t', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))));
+
+INSERT INTO virtual_aliases
+  (`id`, `domain_id`, `source`, `destination`)
+    VALUES (1, 1, 'postmaster@mendela.xyz', 'mail@mendela.xyz');
+
+
+sudo nano /etc/postfix/main.cf 
+
+
+# дописываем или изменяем:
+
+# пока что без TLS
+smtpd_use_tls=no
+myhostname = mail.mendela.xyz
+mydestination = localhost
+
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+# то, что пока нет таких файлов - это ОК
+virtual_mailbox_domains = mysql:/etc/postfix/mysql-domains.cf
+virtual_mailbox_maps = mysql:/etc/postfix/mysql-users.cf
+virtual_alias_maps = mysql:/etc/postfix/mysql-aliases.cf
+
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_recipient_restrictions = permit_sasl_authenticated,⏎
+  permit_mynetworks,reject_unauth_destination
+
+# увеличиваем максимальный размер письма до 50 Мб
+message_size_limit = 52428800
+
+sudo nano /etc/postfix/mysql-domains.cf
+
+hosts = 127.0.0.1
+user = mail
+password = pa55w0rd
+dbname = mail
+query = SELECT 1 FROM virtual_domains WHERE name='%s'
+
+sudo nano /etc/postfix/mysql-users.cf
+
+hosts = 127.0.0.1
+user = mail
+password = pa55w0rd
+dbname = mail
+query = SELECT 1 FROM virtual_users WHERE email='%s'
+
+sudo nano /etc/postfix/mysql-aliases.cf
+
+hosts = 127.0.0.1
+user = mail
+password = pa55w0rd
+dbname = mail
+query = SELECT destination FROM virtual_aliases WHERE source='%s'
+
+sudo chown postfix:postfix /etc/postfix/mysql-*.cf
+sudo chmod o-rwx /etc/postfix/mysql-*.cf
+
+sudo service postfix restart
+
+sudo postmap -q mail@mendela.xyz mysql:/etc/postfix/mysql-users.cf
+>>> 1
+sudo postmap -q mendela.xyz mysql:/etc/postfix/mysql-domains.cf
+>>> 1
+sudo postmap -q postmaster@mendela.xyz mysql:/etc/postfix/mysql-aliases.cf
+>>> mail@mendela.xyz
+
+
+sudo nano /etc/dovecot/dovecot.conf
+protocols = imap lmtp
+
+sudo nano /etc/dovecot/conf.d/10-mail.conf
+mail_location = maildir:/var/mail/vhosts/%d/%n
+mail_privileged_group = mail
+
+sudo nano /etc/dovecot/conf.d/10-auth.conf
+auth_mechanisms = plain login
+# эту строчку нужно закомментировать:
+#!include auth-system.conf.ext
+!include auth-sql.conf.ext
+
+
+/etc/dovecot/conf.d/auth-sql.conf.ext
+passdb {
+  driver = sql
+  args = /etc/dovecot/dovecot-sql.conf.ext
+}
+userdb {
+  driver = static
+  args = uid=vmail gid=vmail home=/var/mail/vhosts/%d/%n
+}
+
+

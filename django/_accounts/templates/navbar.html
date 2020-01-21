@@ -1,0 +1,33 @@
+<header>
+    <div class="container">
+        <nav>
+            <ul>
+                {% if request.user.is_authenticated%}                
+                <li><a href="{% url 'account_set_password' %}">AA account_set_password</a></li>
+                <li><a href="{% url 'account_email' %}">AA account_email</a></li>
+                <hr>
+                <li><a href="{% url 'logout_view' %}">Custom Logout</a></li>
+                <li><a href="{% url 'logout' %}">DJ Logout </a></li>
+                <li><a href="{% url 'account_logout' %}">AA Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login_view' %}">Custom login</a></li>
+                <li><a href="{% url 'login' %}">DJ Login</a></li>
+                <li><a href="{% url 'account_login' %}">AA Login</a></li>
+                <hr>
+                <li><a href="{% url 'register_view' %}">Custom Register</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="{% url 'account_signup' %}">AA Register</a></li>
+                <hr>
+                <li><a href="#">Empty</a></li>
+                <li><a href="{% url 'password_change' %}">DJ Password Change</a></li>
+                <li><a href="{% url 'account_change_password' %}">AA Password Change</a></li>
+                <hr>
+                <li><a href="#">Empty</a></li>
+                <li><a href="{% url 'password_reset' %}">DJ Password Reset</a></li>
+                <li><a href="{% url 'account_reset_password' %}">AA Password Reset</a></li>
+
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>
