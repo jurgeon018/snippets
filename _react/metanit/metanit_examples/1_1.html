@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"/>>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <style>
+        .user-info{
+            padding: 8px;
+            border: 1px #ccc solid;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <!-- // cdn подключается для компиляции JSX в JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+    <!-- артибут type указывается для компиляции JSX в JS -->
+    <script type="text/babel">
+    const user = {
+        id: 5,
+        age: 33,
+        firstName: 'Tom', 
+        lastName: 'Smith', 
+        getFullName: function(){
+            return `${this.firstName} ${this.lastName}`;
+        },
+    };
+    const userClassName = 'user-info';
+    const styleObj = {
+        color:'red',
+        fontFamily:'Verdana'
+    };
+        ReactDOM.render(
+            {/* // <div class={userClassName} style={{color:'red', fontFamily:"Verdana"}}> */}
+            <div class={userClassName} style={styleObj}>
+                Hello react   
+                <p>id: {user.id}</p>   
+                <p>Полное имя: {user.getFullName()}</p>
+                <p>Возраст: {user.age}</p>
+                <p>Время генерации данных: {new Date().toLocaleTimeString()}</p>
+            </div>,
+            document.getElementById('app')
+        )
+    </script>
+</body>
+</html>

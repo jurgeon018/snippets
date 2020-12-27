@@ -1,0 +1,9 @@
+ArgumentParser
+flask
+requests
+BeautifulSoup
+requests-toolbelt
+pika
+uuid
+feedparser
+lnetatmo

@@ -1,0 +1,140 @@
+sudo -u postgres psql -c "....."
+команда, которая позволяет выполнять консольные команды внутри постгреса с правами админа.
+
+psql -d template1 
+psql -h localhost -d template1 
+psql -U jurgeon 
+psql -U jurgeon -d jurgeon 
+psql -U jurgeon -d DatabaseName 
+psql -U jurgeon -d template1 
+psql -h localhost -U jurgeon -d testdb 
+
+-U - юзер. По дефолту ${USER}
+-h - хост. По дефолту localhost
+-d - база. По дефолту ${USER}
+
+sudo -u postgres psql -c "create user amendela with password '';"
+sudo -u postgres psql -c "alter role amendela set client_encoding to 'utf8';"
+sudo -u postgres psql -c "alter role amendela set default_transaction_isolation to 'read committed';"
+sudo -u postgres psql -c "alter role amendela set timezone to 'UTC';"
+
+
+
+# створює юзера в БД. Вводити 1 раз перед початком розробки. 
+sudo -u postgres psql -c "create user jurgeon with password '69018'; alter role jurgeon set client_encoding to 'utf8'; alter role jurgeon set default_transaction_isolation to 'read committed'; alter role jurgeon set timezone to 'UTC';"
+
+# це не чіпай 
+#####sudo -u postgres psql -c 'create database dopomoga;'
+#####sudo -u postgres psql -c 'grant all privileges on database dopomoga to jurgeon;'
+
+# видаляє БД
+# sudo -u postgres psql -c "drop database testdb; "
+
+# створює БД 
+sudo -u postgres psql -c "create database testdb owner jurgeon; "
+
+# включає термінал 
+# https://stackoverflow.com/questions/17633422/psql-fatal-database-user-does-not-exist
+psql -d template1 
+psql -h localhost -d template1 
+psql -U jurgeon 
+psql -U jurgeon -d jurgeon 
+psql -U jurgeon -d DatabaseName 
+psql -U jurgeon -d template1 
+psql -h localhost -U jurgeon -d testdb 
+
+sudo -u postgres psql -c "alter role amendela with password '69018'"
+change password
+
+
+
+
+# создает базу
+create database shop;
+
+# переключение на созданную базу 
+\c shop
+
+# показывает какие есть таблицы
+\d 
+
+# создает таблицу в базе
+create table customer(
+id serial primary key,
+name varchar(255),
+phone varchar(30),
+email varchar(255)
+);
+
+create table product(
+id serial primary key,
+name varchar(255),
+description text,
+price integer
+);
+
+create table product_photo(
+id serial primary key,
+url varchar(255),
+product_id integer references product(id)
+);
+
+create table cart(
+id serial primary key,
+customer_id integer references customer(id)
+);
+
+create table cart_product(
+id serial primary key,
+cart_id integer references cart(id),
+product_id integer references product(id)
+);
+
+# показывает какие есть таблицы
+\d
+
+# последовательность уникальных идентификатров, служебная сущность
+{table_name}_id_seq
+
+# показывает какие поля есть в таблице 
+\d {table_name}
+\d customer
+\d product
+\d product_photo
+\d cart
+\d cart_product
+
+insert into customer(name, phone, email) values ('vasya', '02', 'vasya@gmail.com');
+insert into customer(name, phone, email) values ('petya', '03', 'petya@gmail.com');
+insert into product (name, description, price) values ('iphone','Крутой телефон','1000');
+insert into product (name, description, price) values ('епл вотч','крутые часы','10100');
+insert into product_photo (url, product_id) values ('iphone.jpg', 1);
+insert into cart (customer_id) values (1);
+insert into cart (customer_id) values (2);
+insert into cart_product (cart_id, product_id) values (1,1);
+insert into cart_product (cart_id, product_id) values (1,2);
+insert into cart_product (cart_id, product_id) values (2,1);
+
+select name from customer; 
+select name, phone from customer; 
+select * from customer; 
+select * from product; 
+select * from product_photo; 
+select * from cart; 
+select * from cart_product; 
+select * from product where id=2 or price > 1000;
+select * from product where id=2 and price > 1000;
+
+delete from product where id=2;
+
+update product_photo set url='fdsasdf.fff' where id=1;
+
+
+select pp.*, p.name from product_photo pp left join product p on p.id=pp.product_id;
+
+alter table product_photo drop constraint product_photo_product_id_fkey;
+insert into product_photo (url, product_id) values ('unknown.jpg', 100);
+
+
+
+

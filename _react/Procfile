@@ -1,0 +1,2 @@
+release: python src/backend/manage.py migrate
+web: gunicorn src/backend/_djreact.wsgi --log-file -

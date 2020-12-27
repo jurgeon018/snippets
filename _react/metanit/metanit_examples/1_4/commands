@@ -1,0 +1,3 @@
+npm install - запустить еще раз, после того как обновился файл package.json
+/node_modules/.bin/babel index.jsx --out-file app.js
+можно запускать файл через браузер напрямую, без веб-сервера, потому что jsx скомпилировался в js при помощи Babels

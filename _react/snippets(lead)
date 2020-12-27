@@ -1,0 +1,20 @@
+npm init -y
+or
+npx create-react-app .
+
+
+sudo chown -R $(whoami) ~/.npm
+sudo chown -R $(whoami) ~/.config
+npm i -D webpack webpack-cli
+npm i -D @babel/core babel-loader @babel/preset-env @babel/preset-react babel-plugin-transform-class-properties
+npm i react react-dom react-router-dom
+npm i prop-types
+npm i redux react-redux redux-thunk redux-devtools-extension
+npm i axios
+npm i react-alert react-alert-template-basic react-transition-group
+
+npm run build_leadmanager
+npm run dev_leadmanager
+python3 leadmanager/manage.py runserver
+
+

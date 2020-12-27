@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+        
+    <script type="text/babel">
+        const Router = ReactRouterDOM.BrowserRouter;
+        const Route = ReactRouterDOM.Route;
+        const Switch = ReactRouterDOM.Switch;
+        class Home extends React.Component{
+            render(){
+                return <h2>Main</h2>
+            }
+        }
+        class About extends React.Component{
+            render(){
+                const id = this.props.match.params.id;
+                const name = this.props.match.params.name;
+                return <h2>id: {id} Name: {name}</h2>
+            }
+        }
+        class NotFound extends React.Component{
+            render(){
+                return <h2>Resource not found</h2>
+            }
+        }
+        class ProductsList extends React.Component{
+            render(){
+                return <h2>List of products:</h2>
+            }
+        }
+        class Product extends React.Component{
+            render(){
+                const prodId = this.props.match.params.id;
+                const cat = this.props.match.params.category;
+                return <div>
+                    <h2>Товар</h2>
+                    <p>Категория {cat}</p>
+                    <p>Идентификатор {prodId}</p>
+                </div>;
+            }
+        }
+        class Products extends React.Component{
+            render(){
+                return <div>
+                    <Switch> 
+                        // сегментация параметров. В качестве разделителя можно использовать не только /
+                        <Route exact path="/products" component={ProductsList} />
+                        <Route path="/products/:category-:id" component={Product} />
+                    </Switch>
+                </div>;
+            }
+        }
+        ReactDOM.render(
+            <Router>
+                <div>
+                    <Switch>
+                        <Route exact path="/" component={Home}></Route>
+                        <Route path="/products" component={Products}></Route>
+                        <Route path="/about/:id/:name" component={About}></Route>
+                        <Route component={NotFound}></Route>
+                    </Switch>
+                </div>
+            </Router>,
+            document.getElementById('app')
+        )
+    </script>
+</body>
+</html>

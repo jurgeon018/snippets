@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Hello React</title>
+</head>
+<body>
+    <div id="app"></div>
+      
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+    <script type="text/babel">
+
+        // Через функции
+        // function Hello(props){
+        //     return <div>
+        //         <p>Name: {props.name}</p>
+        //         <p>Age: {props.age}</p>
+        //     </div>
+        // }
+        // Через стрелочные функции
+        //  const Hello = (props) => {
+        //      const {name, age} = props;
+        //    return(<div>
+        //         <p>Name: {name}</p>
+        //         <p>Age: {age}</p>
+        //     </div>)
+        // }
+        // Через классы
+        class Hello extends React.Component {
+            render() {
+              return <div>
+                          <p>Имя: {this.props.name}</p>
+                          <p>Возраст: {this.props.age}</p>
+                      </div>;
+            }
+          }
+          Hello.defaultProps = {name: "Tom", age: 22}; // дефолтные агрументы, если извне не передаются
+          ReactDOM.render(
+            //   <Hello name="Tom" age="33" />,
+              <Hello />,
+              document.getElementById("app")
+          )
+    </script>
+</body>
+</html>
+<!-- 
+render() {
+    return <div>
+                this.props.name = "alex"; // Ошибка! props - только для чтения
+                <p>Имя: {this.props.name}</p>
+                <p>Возраст: {this.props.age}</p>
+            </div>;
+  } -->

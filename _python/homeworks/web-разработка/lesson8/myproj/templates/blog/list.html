@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Записи блога{% endblock %}
+
+{% block content %}
+
+<h1>Мой блог</h1>
+
+{% for post in posts %}
+	<h2>{{ post.title }}</h2>
+	{{ post.text|urlize|linebreaks }}
+	<p><i>{{ post.date }}</i></p>
+{% endfor %}
+
+
+{% endblock %}
+

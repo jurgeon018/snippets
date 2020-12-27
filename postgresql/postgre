@@ -12,7 +12,7 @@ sudo service postgresql start
 https://djbook.ru/examples/77/
 sudo -u postgres psql postgres
 \password postgres
-create user jurgeon018 with password '69018';
+create user jurgeon018 with password 'password';
 alter role jurgeon018 set client_encoding to 'utf8';
 alter role jurgeon018 set default_transaction_isolation to 'read committed';
 alter role jurgeon018 set timezone to 'UTC';
@@ -24,7 +24,7 @@ create database margo_db owner jurgeon018;
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 'NAME': 'margo_db',
 'USER' : 'jurgeon018',
-'PASSWORD' : '69018',
+'PASSWORD' : 'password',
 'HOST' : '127.0.0.1',
 'PORT' : '5432',
 
@@ -54,11 +54,11 @@ sudo su (root)
 su - jurgeon(jurgeon)
 sudo su - postgres
 >>> [sudo] password for jurgeon: 
-69018
+password
 psql
 postgres=# CREATE USER jurgeon
 postgres-# WITH SUPERUSER CREATEDB CREATEROLE
-postgres-# PASSWORD '69018';
+postgres-# PASSWORD 'password';
 >>> CREATE ROLE
 >>> postgres=#
 psql postgres
@@ -70,13 +70,13 @@ postgres=# \connect test_database;
 # terminal
 createdb db_name_1
 
-# pgadmin4 => browser(69018)
+# pgadmin4 => browser(password)
 General -> Name: random_server_name
 Connection -> Host name/address: localhost or 127.0.0.1 or ???
 Connection -> Port: 5432
 Maintenance database: db_name_1
 Username: jurgeon???
-Password: 69018???
+Password: password???
 Save.
 
 

@@ -1,0 +1,3 @@
+Store - is what react-redux uses to maintain the state for the entire application. It is broken into 2 parts: actions and reducers. 
+Actions contains what actually is definen to take place. Inside actionsTypes are defined all the types of thigs that can happend, such as login, logout.
+Reducers is what actually takes the state, and returns only the piece of state that you need.

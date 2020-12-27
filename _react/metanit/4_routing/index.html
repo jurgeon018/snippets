@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <style>
+        .user-info {
+            padding: 8px;
+            border: 1px #333 solid;
+        }
+        .app{
+            padding: 8px;
+            border: 1px #333 solid;
+        }
+        button {
+        width: 100px;
+        height:30px;
+        border-radius:4px;
+        margin:50px;
+        }
+        .on{
+            color:#666;
+            background-color: #ccc;
+
+        }
+        .off{
+            color: #888;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="app" id="app14"></div>
+<div class="app" id="app15"></div>
+<div class="app" id="app16"></div>
+<div class="app" id="app17"></div>
+<div class="app" id="app18"></div>
+<div class="app" id="app19"></div>
+<div class="app" id="app20"></div>
+<div class="app" id="app21"></div>
+<div class="app" id="app22"></div>
+<div class="app" id="app23"></div>
+<div class="app" id="app24"></div>
+
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<!-- // модуль для работы с маршрутизацией -->
+<script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
+
+
+<!--  babel cdn подключается для компиляции JSX в JS. 
+Если скомпилировать вручную то CDN не нужен. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+<!-- <script type="text/babel" src="index.jsx">
+</script> -->
+
+
+<!-- описать конфиги в package.json -->
+<!-- npm install -->
+<!-- node_modules/.bin/babel index.jsx --out-file app.js -->
+<!-- npm start (опционально) -->
+<!-- <script src="app.js">
+</script> -->
+
+
+<!-- описать конфиги в package.json -->
+<!-- npm install -->
+<!-- описать конфиги в webpack.config.js -->
+<!-- npm build -->
+<!-- npm run dev -->
+<script src="public/bundle.js">
+</script>
+
+
+</body>
+</html>

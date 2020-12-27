@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Маршруты в React</title>
+</head>
+<body>
+    <div id="app"></div>
+         
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+    <!-- модуль для работы с маршрутизацией -->
+    <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+         
+    <script type="text/babel">
+        const Router = ReactRouterDOM.BrowserRouter;
+        const Route = ReactRouterDOM.Route;
+        const Switch = ReactRouterDOM.Switch;
+
+        class About extends React.Component{
+            render(){
+                return <h2>About site</h2>
+            }
+        }
+        class NotFound extends React.Component{
+            render(){
+                return <h2>Resource not found</h2>
+            }
+        }
+        class Main extends React.Component{
+            render(){
+                return <h2>Main Page</h2>
+            }
+        }
+        ReactDOM.render(
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={Main}></Route>
+                    <Route path='/about' component={About}></Route> // /about /about/ about/23432f
+                    <Route exact path='/about' component={About}></Route> // /about или /about/
+                    <Route strict path='/about' component={About}></Route> // только /about
+                    <Route path='/contact' children = { () => <h2>Contacts</h2> } ></Route>
+                    <Route component={NotFound}></Route>
+                </Switch>
+            </Router>,
+            document.getElementById('app')
+        )
+
+
+    </script>
+</body>
+</html>

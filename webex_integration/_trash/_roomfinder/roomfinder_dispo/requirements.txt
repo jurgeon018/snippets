@@ -1,0 +1,7 @@
+setuptools
+wheel
+ArgumentParser
+flask
+requests
+pika
+uuid
