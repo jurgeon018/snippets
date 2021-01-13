@@ -1,0 +1,11 @@
+sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
+
+
+
+https://www.forumsys.com/tutorials/integration-how-to/ldap/online-ldap-test-server/
+ldapsearch -W -h ldap.forumsys.com -D "uid=tesla,dc=example,dc=com" -b "dc=example,dc=com"
+ldapsearch -W -h ldap.forumsys.com 
+>>> password
+
+
+

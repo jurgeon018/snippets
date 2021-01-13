@@ -22,5 +22,3 @@ cache.delete('a')
 cache.delete_many(['a', 'b', 'c'])
 cache.clear()
 cache.touch('a', 10)
-
-
