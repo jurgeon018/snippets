@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+    Root index page
+{% endblock title %}
+{% block content %}
+
+
+    Root index page.
+    <form action="{{url_for('index')}}" method='POST'>
+        <input name="input1" value="value">
+        <input name="input2" value="value5">
+        <input name="input3" value="value2">
+        <input type="submit">
+    </form>
+    <form action="{{url_for('index')}}" method='GET'>
+        <input name="input4" value="value">
+        <input name="input5" value="value5">
+        <input name="input6" value="value2">
+        <input type="submit">
+    </form>
+    <script>
+        let user = {
+            name: 'vasya',
+            age: 10,
+        }
+        // fetch('/')
+        // fetch('/', {
+        //     method: 'POST',
+        //     body: JSON.stringify(user)
+        // })
+        console.log(user)
+    </script>
+
+{% endblock %}
+

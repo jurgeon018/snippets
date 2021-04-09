@@ -1,0 +1,14 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+Users Index
+{% endblock title %}
+
+{% block content %}
+Users index page.
+<br>
+Go to <a href="{{url_for('users.contacts')}}"> users contacts page</a>
+<br>
+Go to <a href="{{url_for('contacts')}}"> root contacts page</a>
+
+{% endblock content %}

@@ -1,0 +1,4 @@
+pytest 
+pytest 01_run
+pytest 01_run/test_01_run.py
+pytest 01_run/test_01_run.py::test_01
