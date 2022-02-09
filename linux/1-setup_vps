@@ -51,6 +51,9 @@ sudo ufw allow https
 sudo ufw enable
 #sudo ufw disable 
 
+exit
+
+ssh jurgeon@ip
 
 git config --global user.email "jurgeon018@gmail.com"
 git config --global user.name "Andrew Mendela"
