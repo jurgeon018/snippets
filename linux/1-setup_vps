@@ -32,7 +32,8 @@ sudo apt-get install uwsgi               \
                      libffi-dev          \
                      shared-mime-info    \
                      supervisor          \
-                     python-certbot-nginx\
+                     certbot             \
+                     python3-certbot-nginx\
 
 
 
